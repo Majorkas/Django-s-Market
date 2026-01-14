@@ -1,0 +1,11 @@
+[project]
+name = "ucd-pa-frameworks-assessment"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "django==4.2.27",
+    "django-crispy-forms>=2.5",
+    "gunicorn>=23.0.0",
+    "psycopg2>=2.9.11",
+    "whitenoise>=6.11.0",
+]
