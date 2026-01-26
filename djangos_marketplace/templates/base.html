@@ -1,0 +1,89 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% static 'css/output.css' %}" />
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    {% if title %}
+        <title>Django's Market - {{ title }}</title>
+    {% else %}
+        <title>Django's Market</title>
+    {% endif %}
+</head>
+<body class="min-h-screen flex flex-col">
+    <nav class="border-b bg-background">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+
+                <div class="flex items-center space-x-8">
+                    <a href="/" class="text-xl font-bold text-foreground">
+                        Django's Market
+                    </a>
+
+                    <div class="flex space-x-4">
+                        <a href="/" class="text-muted-foreground hover:text-foreground transition-colors">
+                            {% trans "Home" %}
+                        </a>
+                        <a href="/market/" class="text-muted-foreground hover:text-foreground transition-colors">
+                            {% trans "Market" %}
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'profile' %}">
+                            <c-button variant="ghost" size="sm">
+                                {{ user.username }}
+                            </c-button>
+                        </a>
+                        <form method="POST" action="{% url 'account_logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3">
+                                {% trans "Logout" %}
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'account_login' %}">
+                            <c-button variant="ghost" size="sm">
+                                {% trans "Login" %}
+                            </c-button>
+                        </a>
+                        <a href="{% url 'account_signup' %}">
+                            <c-button size="sm">
+                                {% trans "Register" %}
+                            </c-button>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    {% if messages %}
+        <div class="container mx-auto px-4 py-4">
+            {% for message in messages %}
+                <c-alert variant="{% if message.tags == 'error' %}destructive{% elif message.tags == 'success' %}default{% else %}default{% endif %}" class="mb-4">
+                    {{ message }}
+                </c-alert>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+
+    <main class="flex-1">
+        {% block content %}{% endblock %}
+    </main>
+
+
+    <footer class="border-t py-6 mt-auto">
+        <div class="container mx-auto px-4 text-center text-muted-foreground text-sm">
+            <p>&copy; 2026 Django's Market. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
