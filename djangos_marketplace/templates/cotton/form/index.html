@@ -1,0 +1,8 @@
+<form
+    method="{{ method|default:'POST' }}"
+    {% if action %}action="{{ action }}"{% endif %}
+    {% if enctype %}enctype="{{ enctype }}"{% endif %}
+    {{ attrs }}
+>
+    {{ slot }}
+</form>
