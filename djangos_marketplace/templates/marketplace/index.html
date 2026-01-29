@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-12">
+
+    <div class="text-center mb-16">
+        <h1 class="text-5xl font-bold mb-4">{% trans "Welcome to Django's Market" %}</h1>
+        <p class="text-xl text-muted-foreground mb-8">
+            {% trans "Discover amazing items from our marketplace" %}
+        </p>
+        <a href="{% url 'market' %}">
+            <c-button size="lg">
+                {% trans "Browse All Items" %}
+            </c-button>
+        </a>
+    </div>
+
+
+    <div class="mb-8">
+        <h2 class="text-3xl font-bold mb-6">{% trans "Featured Items" %}</h2>
+
+        {% if random_items %}
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for item in random_items %}
+                    <c-card class="overflow-hidden hover:shadow-lg transition-shadow">
+                        {% if item.image %}
+                            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="w-full h-48 object-cover">
+                        {% else %}
+                            <div class="w-full h-48 bg-muted flex items-center justify-center">
+                                <span class="text-muted-foreground">{% trans "No image" %}</span>
+                            </div>
+                        {% endif %}
+
+                        <c-card.header>
+                            <c-card.title>{{ item.title }}</c-card.title>
+                            <c-card.description>
+                                {{ item.description|truncatewords:15 }}
+                            </c-card.description>
+                        </c-card.header>
+
+                        <c-card.content>
+                            <p class="text-2xl font-bold text-primary">${{ item.price }}</p>
+                        </c-card.content>
+
+                        <c-card.footer>
+                            <a href="{% url 'item_detail' item.id %}" class="w-full">
+                                <c-button class="w-full">
+                                    {% trans "View Details" %}
+                                </c-button>
+                            </a>
+                        </c-card.footer>
+                    </c-card>
+                {% endfor %}
+            </div>
+        {% else %}
+            <c-alert>
+                <p>{% trans "No items available at the moment. Check back soon!" %}</p>
+            </c-alert>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
