@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+
+    <div class="mb-8">
+        <h1 class="text-4xl font-bold mb-2">{% trans "Market" %}</h1>
+        <p class="text-muted-foreground">{% trans "Browse all available items" %}</p>
+        <a href="{% url 'item_create' %}" class="w-full block">
+            <c-button class="w-full">
+                {% trans "Post Item" %}
+            </c-button>
+        </a>
+    </div>
+
+    {% if items %}
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
+            {% for item in items %}
+                <c-card class="hover:shadow-lg transition-shadow">
+                        <img src="{{ item.image.url }}" alt="{{ item.title }}" class="w-full h-48 object-cover">
+                    <c-card.header>
+                        <c-card.title>{{ item.title }}</c-card.title>
+                        <c-card.description>
+                            {{ item.description|truncatewords:15 }}
+                        </c-card.description>
+                    </c-card.header>
+
+                    <c-card.content>
+                        <p class="text-2xl font-bold text-primary">${{ item.price }}</p>
+                    </c-card.content>
+
+                    <c-card.footer>
+                        <a href="{% url 'item_detail' item.id %}" class="w-full block">
+                            <c-button class="w-full">
+                                {% trans "View Details" %}
+                            </c-button>
+                        </a>
+                    </c-card.footer>
+                </c-card>
+            {% endfor %}
+        </div>
+
+
+        {% if is_paginated %}
+            <div class="flex justify-center gap-2">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">
+                        <c-button variant="outline" size="sm">First</c-button>
+                    </a>
+                    <a href="?page={{ page_obj.previous_page_number }}">
+                        <c-button variant="outline" size="sm">Previous</c-button>
+                    </a>
+                {% endif %}
+
+                <span class="px-4 text-sm text-muted-foreground self-center">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">
+                        <c-button variant="outline" size="sm">Next</c-button>
+                    </a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">
+                        <c-button variant="outline" size="sm">Last</c-button>
+                    </a>
+                {% endif %}
+            </div>
+        {% endif %}
+    {% else %}
+        <c-alert>
+            <c-alert.title>No items found</c-alert.title>
+            <c-alert.description>
+                No items are currently available. Check back soon!
+            </c-alert.description>
+        </c-alert>
+    {% endif %}
+</div>
+{% endblock %}
