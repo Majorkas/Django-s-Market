@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+    <c-card>
+        <c-card.header>
+            <c-card.title>
+                {% if object %}
+                    {% trans "Edit Item" %}
+                {% else %}
+                    {% trans "Post New Item" %}
+                {% endif %}
+            </c-card.title>
+            <c-card.description>
+                {% if object %}
+                    {% trans "Update your item details" %}
+                {% else %}
+                    {% trans "List a new item in the marketplace" %}
+                {% endif %}
+            </c-card.description>
+        </c-card.header>
+
+        <c-card.content>
+            <c-form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form|crispy }}
+
+                <div class="flex gap-2 pt-4">
+                    <c-button type="submit" class="flex-1">
+                        {% if object %}
+                            {% trans "Update Item" %}
+                        {% else %}
+                            {% trans "Post Item" %}
+                        {% endif %}
+                    </c-button>
+                    <a href="{% url 'profile' %}" class="flex-1">
+                        <c-button type="button" variant="outline" class="w-full">
+                            {% trans "Cancel" %}
+                        </c-button>
+                    </a>
+                </div>
+            </c-form>
+        </c-card.content>
+    </c-card>
+</div>
+{% endblock %}
