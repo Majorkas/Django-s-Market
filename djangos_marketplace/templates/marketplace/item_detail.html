@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{{ item.title }}{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <div class="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+
+        <div>
+            <img src="{{ item.image.url }}" alt="{{ item.title }}" class="w-full h-[100px] rounded-lg shadow-lg object-cover max-h-[100px]">
+        </div>
+
+
+        <div class="space-y-6">
+            <div>
+                <div class="flex items-center justify-between mb-2">
+                    <h1 class="text-4xl font-bold">{{ item.title }}</h1>
+                    {% if not item.is_available %}
+                        <c-badge variant="secondary" class="text-base">
+                            {% trans "Unavailable" %}
+                        </c-badge>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div>
+                <p class="text-4xl font-bold text-primary">${{ item.price }}</p>
+            </div>
+
+            <c-card>
+                <c-card.header>
+                    <c-card.title>{% trans "Description" %}</c-card.title>
+                </c-card.header>
+                <c-card.content>
+                    <p class="text-muted-foreground whitespace-pre-line">{{ item.description }}</p>
+                </c-card.content>
+            </c-card>
+
+            <c-card>
+                <c-card.header>
+                    <c-card.title>{% trans "Seller Information" %}</c-card.title>
+                </c-card.header>
+                <c-card.content class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        {% if item.seller.profile.profile_picture %}
+                            <img src="{{ item.seller.profile.profile_picture.url }}" alt="{{ item.seller.username }}" class="w-12 h-12 rounded-full object-cover">
+                        {% else %}
+                            <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-semibold text-lg">
+                                {{ item.seller.username|slice:":1"|upper }}
+                            </div>
+                        {% endif %}
+                        <div>
+                            <p class="font-semibold text-lg">{{ item.seller.username }}</p>
+                            <p class="text-sm text-muted-foreground">{% trans "Member since" %} {{ item.seller.date_joined|date:"Y" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="border-t pt-4">
+                        <p class="text-sm text-muted-foreground mb-1">{% trans "Posted" %}:</p>
+                        <p class="font-medium">{{ item.date_posted|date:"F d, Y \a\t g:i A" }}</p>
+                    </div>
+
+                    {% if item.contact %}
+                        <div class="border-t pt-4">
+                            <p class="text-sm text-muted-foreground mb-1">{% trans "Contact" %}:</p>
+                            <p class="font-medium text-lg">{{ item.contact }}</p>
+                        </div>
+                    {% endif %}
+                </c-card.content>
+            </c-card>
+
+
+            {% if user.is_authenticated and user == item.seller %}
+                <c-card>
+                    <c-card.header>
+                        <c-card.title>{% trans "Manage Item" %}</c-card.title>
+                    </c-card.header>
+                    <c-card.content class="flex gap-2">
+                        <a href="{% url 'item_edit' item.id %}" class="flex-1">
+                            <c-button variant="default" class="w-full">
+                                {% trans "Edit Item" %}
+                            </c-button>
+                        </a>
+                        <a href="{% url 'item_delete' item.id %}" class="flex-1">
+                            <c-button variant="destructive" class="w-full">
+                                {% trans "Delete Item" %}
+                            </c-button>
+                        </a>
+                    </c-card.content>
+                </c-card>
+            {% endif %}
+
+            <div class="flex gap-2">
+                <a href="{% url 'market' %}" class="flex-1">
+                    <c-button variant="outline" class="w-full">
+                        {% trans "Back to Market" %}
+                    </c-button>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
