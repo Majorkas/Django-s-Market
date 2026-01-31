@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Delete Item" %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center bg-background py-8 px-4">
+    <c-card class="w-full max-w-2xl">
+        <c-card.header>
+            <c-card.title class="text-2xl">{% trans "Delete Item" %}</c-card.title>
+            <c-card.description>
+                {% trans "Are you sure you want to delete this item? This action cannot be undone." %}
+            </c-card.description>
+        </c-card.header>
+
+        <c-card.content class="space-y-4">
+            <c-alert variant="destructive">
+                <c-alert.title>{% trans "Warning" %}</c-alert.title>
+                <c-alert.description>
+                    {% trans "This will permanently delete your item listing. All information will be lost and cannot be recovered." %}
+                </c-alert.description>
+            </c-alert>
+
+            <div class="p-6 rounded-lg border bg-muted/50">
+                <div class="grid md:grid-cols-3 gap-4">
+
+                    <div class="md:col-span-1">
+                        <img src="{{ object.image.url }}" alt="{{ object.title }}" class="w-full h-32 object-cover rounded-md">
+                    </div>
+
+
+                    <div class="md:col-span-2 space-y-2">
+                        <h3 class="text-xl font-bold">{{ object.title }}</h3>
+                        <p class="text-sm text-muted-foreground line-clamp-3">{{ object.description }}</p>
+                        <div class="flex items-center justify-between pt-2 border-t">
+                            <p class="text-2xl font-bold text-primary">${{ object.price }}</p>
+                            {% if not object.is_available %}
+                                <c-badge variant="secondary">
+                                    {% trans "Unavailable" %}
+                                </c-badge>
+                            {% else %}
+                                <c-badge variant="default">
+                                    {% trans "Available" %}
+                                </c-badge>
+                            {% endif %}
+                        </div>
+                        <p class="text-xs text-muted-foreground pt-2">
+                            {% trans "Posted" %}: {{ object.date_posted|date:"M d, Y" }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </c-card.content>
+
+        <c-card.footer class="flex gap-3">
+            <a href="{% url 'item_detail' object.id %}" class="flex-1">
+                <c-button type="button" variant="outline" class="w-full">
+                    {% trans "Cancel" %}
+                </c-button>
+            </a>
+            <c-form method="POST" class="flex-1">
+                {% csrf_token %}
+                <c-button type="submit" variant="destructive" class="w-full">
+                    {% trans "Yes, Delete Forever" %}
+                </c-button>
+            </c-form>
+        </c-card.footer>
+    </c-card>
+</div>
+{% endblock %}
