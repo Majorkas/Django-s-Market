@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-4xl font-bold mb-8">{% trans "Profile" %}</h1>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+        <div class="lg:col-span-1">
+            <c-card>
+                <c-card.header>
+                    <c-card.title>{% trans "Update Profile" %}</c-card.title>
+                </c-card.header>
+
+                <c-card.content>
+                    <c-form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <c-button type="submit" class="w-full mt-4">
+                            {% trans "Update Profile" %}
+                        </c-button>
+                    </c-form>
+                </c-card.content>
+            </c-card>
+        </div>
+
+
+        <div class="lg:col-span-2">
+            <h2 class="text-2xl font-bold mb-4">{% trans "My Items" %}</h2>
+
+            <c-tabs default-value="available">
+                <c-tabs.list>
+                    <c-tabs.trigger value="available">
+                        {% trans "Available" %} ({{ available_items.count }})
+                    </c-tabs.trigger>
+                    <c-tabs.trigger value="unavailable">
+                        {% trans "Unavailable" %} ({{ unavailable_items.count }})
+                    </c-tabs.trigger>
+                </c-tabs.list>
+
+
+                <c-tabs.content value="available">
+                    {% if available_items %}
+                        <div class="grid md:grid-cols-2 gap-6 mt-4">
+                            {% for item in available_items %}
+                                <c-card class="hover:shadow-lg transition-shadow">
+                                    {% if item.image %}
+                                        <img src="{{ item.image.url }}" alt="{{ item.title }}" class="w-full h-48 object-cover">
+                                    {% else %}
+                                        <div class="w-full h-48 bg-muted"></div>
+                                    {% endif %}
+
+                                    <c-card.header>
+                                        <c-card.title>{{ item.title }}</c-card.title>
+                                        <c-card.description>
+                                            {{ item.description|truncatewords:15 }}
+                                        </c-card.description>
+                                    </c-card.header>
+
+                                    <c-card.content>
+                                        <p class="text-2xl font-bold text-primary">${{ item.price }}</p>
+                                        <p class="text-sm text-muted-foreground mt-2">
+                                            {% trans "Posted" %}: {{ item.date_posted|date:"M d, Y" }}
+                                        </p>
+                                    </c-card.content>
+
+                                    <c-card.footer class="flex gap-2">
+                                        <a href="{% url 'item_detail' item.id %}" class="flex-1">
+                                            <c-button variant="outline" class="w-full">
+                                                {% trans "View" %}
+                                            </c-button>
+                                        </a>
+                                        <a href="{% url 'item_edit' item.id %}" class="flex-1">
+                                            <c-button class="w-full">
+                                                {% trans "Edit" %}
+                                            </c-button>
+                                        </a>
+                                    </c-card.footer>
+                                </c-card>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <c-alert class="mt-4">
+                            <c-alert.title>{% trans "No available items" %}</c-alert.title>
+                            <c-alert.description>
+                                {% trans "You don't have any available items in the marketplace." %}
+                            </c-alert.description>
+                        </c-alert>
+                    {% endif %}
+                </c-tabs.content>
+
+
+                <c-tabs.content value="unavailable">
+                    {% if unavailable_items %}
+                        <div class="grid md:grid-cols-2 gap-6 mt-4">
+                            {% for item in unavailable_items %}
+                                <c-card class="hover:shadow-lg transition-shadow opacity-75">
+                                    {% if item.image %}
+                                        <img src="{{ item.image.url }}" alt="{{ item.title }}" class="w-full h-48 object-cover grayscale">
+                                    {% else %}
+                                        <div class="w-full h-48 bg-muted"></div>
+                                    {% endif %}
+
+                                    <c-card.header>
+                                        <c-card.title>{{ item.title }}</c-card.title>
+                                        <c-card.description>
+                                            {{ item.description|truncatewords:15 }}
+                                        </c-card.description>
+                                    </c-card.header>
+
+                                    <c-card.content>
+                                        <p class="text-2xl font-bold text-muted-foreground">${{ item.price }}</p>
+                                        <p class="text-sm text-muted-foreground mt-2">
+                                            {% trans "Posted" %}: {{ item.date_posted|date:"M d, Y" }}
+                                        </p>
+                                        <c-badge variant="secondary" class="mt-2">
+                                            {% trans "Unavailable" %}
+                                        </c-badge>
+                                    </c-card.content>
+
+                                    <c-card.footer class="flex gap-2">
+                                        <a href="{% url 'item_detail' item.id %}" class="flex-1">
+                                            <c-button variant="outline" class="w-full">
+                                                {% trans "View" %}
+                                            </c-button>
+                                        </a>
+                                        <a href="{% url 'item_edit' item.id %}" class="flex-1">
+                                            <c-button class="w-full">
+                                                {% trans "Edit" %}
+                                            </c-button>
+                                        </a>
+                                    </c-card.footer>
+                                </c-card>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <c-alert class="mt-4">
+                            <c-alert.title>{% trans "No unavailable items" %}</c-alert.title>
+                            <c-alert.description>
+                                {% trans "You don't have any unavailable items." %}
+                            </c-alert.description>
+                        </c-alert>
+                    {% endif %}
+                </c-tabs.content>
+            </c-tabs>
+        </div>
+    </div>
+</div>
+{% endblock %}
