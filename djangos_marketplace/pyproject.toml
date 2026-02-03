@@ -1,11 +1,19 @@
 [project]
-name = "ucd-pa-frameworks-assessment"
+name = "djangos-marketplace"
 version = "0.1.0"
 requires-python = ">=3.13"
 dependencies = [
     "django==4.2.27",
-    "django-crispy-forms>=2.5",
-    "gunicorn>=23.0.0",
-    "psycopg2>=2.9.11",
-    "whitenoise>=6.11.0",
+    "django-allauth==0.63.3",
+    "django-crispy-forms==2.1",
+    "crispy-tailwind==1.0.3",
+    "django-cotton",
+    "cloudinary==1.41.0",
+    "django-cloudinary-storage==0.3.0",
+    "python-dotenv==1.0.0",
+    "pillow>=10.4.0",
+    "gunicorn==21.2.0",
+    "psycopg2-binary",
+    "dj-database-url==2.1.0",
+    "whitenoise==6.6.0",
 ]
