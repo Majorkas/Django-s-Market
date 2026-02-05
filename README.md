@@ -24,7 +24,7 @@ A full-featured online marketplace built with Django 4.2, featuring user authent
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Majorkas/Django-s-Market
 cd ucd-pa-frameworks-assessment/djangos_marketplace
 ```
 
@@ -179,7 +179,7 @@ This project uses **[Tailwind CSS](https://tailwindcss.com/)**, a utility-first 
 
 ### Key Concepts
 
-**Utility-First**: Instead of writing custom CSS, you compose designs using pre-defined utility classes:
+Using A [Tailwind to Css Converter](https://tailwind-converter.netlify.app/), you can easily translate traditional CSS styles into Tailwind utility classes. For example:
 
 ```html
 <!-- Traditional CSS -->
@@ -189,6 +189,8 @@ This project uses **[Tailwind CSS](https://tailwindcss.com/)**, a utility-first 
 <!-- Tailwind CSS -->
 <div class="p-4 bg-white rounded-lg">...</div>
 ```
+This Helped me to understand the tailwind utility classes and apply them effectively in my project.
+
 
 **Responsive Design**: Built-in responsive modifiers:
 
@@ -214,7 +216,7 @@ This project uses **[Tailwind CSS](https://tailwindcss.com/)**, a utility-first 
 - **[Official Documentation](https://tailwindcss.com/docs)** - Complete guide and API reference
 - **[Tailwind UI](https://tailwindui.com/)** - Official component library (some paid)
 - **[Tailwind Play](https://play.tailwindcss.com/)** - Online playground
-- **[shadcn/ui](https://ui.shadcn.com/)** - Component library (inspiration for this project)
+- **[Django_shadcn](https://shadcn-django.com/)** - Tailwind-based component library for Django
 
 ### Common Tailwind Patterns in This Project
 
@@ -224,9 +226,6 @@ This project uses **[Tailwind CSS](https://tailwindcss.com/)**, a utility-first 
 
 <!-- Card layout -->
 <div class="rounded-lg border bg-card text-card-foreground shadow-sm">
-
-<!-- Button styling -->
-<button class="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-primary-foreground">
 
 <!-- Grid layout -->
 <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -285,8 +284,8 @@ Sign up at [render.com](https://render.com)
 - Configure:
   - **Name**: your-app-name
   - **Environment**: Python 3
-  - **Build Command**: `./build.sh`
-  - **Start Command**: `gunicorn djangos_marketplace.wsgi:application`
+  - **Build Command**: `pip install uv && npm install && npm run build:css && uv sync --frozen && source .venv/bin/activate && python manage.py collectstatic --no-input --clear && python manage.py migrate && uv run manage.py ensure_adminuser`
+  - **Start Command**: `uv run gunicorn djangos_marketplace.wsgi:application`
 
 ### 4. Set environment variables
 
@@ -350,4 +349,6 @@ Visit `http://127.0.0.1:8000/admin` and log in with your superuser credentials.
 - [Cloudinary](https://cloudinary.com/) - Image management
 - [Render.com](https://render.com/) - Hosting platform
 
-Project Link: [https://github.com/yourusername/django-marketplace](https://github.com/yourusername/django-marketplace)
+
+
+Project Link: [https://github.com/Majorkas/Django-s-Market](https://github.com/Majorkas/Django-s-Market)
