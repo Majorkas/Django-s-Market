@@ -2,6 +2,8 @@
 
 A full-featured online marketplace built with Django 4.2, featuring user authentication, item listings, image uploads, and a modern Tailwind CSS interface.
 
+Hosted on Render.com: [https://django-s-market.onrender.com/](https://django-s-market.onrender.com/)
+
 ## 🚀 Features
 
 - **User Authentication**: Secure signup, login, and profile management
