@@ -30,6 +30,11 @@
                         <a href="/market/" class="text-muted-foreground hover:text-foreground transition-colors">
                             {% trans "Market" %}
                         </a>
+                        {% if user.is_authenticated %}
+                        <a href="/item/new" class="text-muted-foreground hover:text-foreground transition-colors">
+                            {% trans "Post Item" %}
+                        </a>
+                        {%endif%}
                     </div>
                 </div>
 
